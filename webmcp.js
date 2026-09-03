@@ -25,8 +25,10 @@ function setApiKey(key) {
 
 async function clawpostFetch(endpoint, options = {}) {
   const apiKey = getApiKey();
+  const skipAuth = options.skipAuth;
+  delete options.skipAuth;
   
-  if (!apiKey) {
+  if (!apiKey && !skipAuth) {
     return {
       success: false,
       error: 'NO_API_KEY',
@@ -37,9 +39,12 @@ async function clawpostFetch(endpoint, options = {}) {
   const url = `${CLAWPOST_API_BASE}${endpoint}`;
   const headers = {
     'Content-Type': 'application/json',
-    'clawpost-api-key': apiKey,
     ...options.headers
   };
+  
+  if (apiKey && !skipAuth) {
+    headers['clawpost-api-key'] = apiKey;
+  }
 
   try {
     const response = await fetch(url, {
@@ -47,7 +52,30 @@ async function clawpostFetch(endpoint, options = {}) {
       headers
     });
 
-    const data = await response.json();
+    const contentType = response.headers.get('content-type') || '';
+    const responseText = await response.text();
+    
+    if (contentType.includes('html') || responseText.trimStart().startsWith('<')) {
+      const snippet = responseText.substring(0, 100).replace(/\s+/g, ' ').trim();
+      return {
+        success: false,
+        error: 'HTML_RESPONSE',
+        statusCode: response.status,
+        message: `Server returned HTML instead of JSON (status ${response.status}): ${snippet}${responseText.length > 100 ? '...' : ''}`
+      };
+    }
+    
+    let data;
+    try {
+      data = JSON.parse(responseText);
+    } catch (parseError) {
+      return {
+        success: false,
+        error: 'INVALID_JSON',
+        statusCode: response.status,
+        message: `Server returned invalid JSON (status ${response.status}): ${responseText.substring(0, 100)}`
+      };
+    }
     
     if (!response.ok) {
       return {
@@ -93,8 +121,38 @@ const toolDefinitions = [
         });
       }
 
-      const result = await clawpostFetch('/v1/account/status');
-      return JSON.stringify(result);
+      const healthResult = await clawpostFetch('/health', { skipAuth: true });
+      if (!healthResult.success) {
+        return JSON.stringify({
+          success: false,
+          error: 'SERVICE_UNAVAILABLE',
+          message: 'Claw Post API is not reachable. Please try again later.',
+          details: healthResult
+        });
+      }
+
+      const usageResult = await clawpostFetch('/v1/usage');
+      
+      if (usageResult.statusCode === 401) {
+        return JSON.stringify({
+          success: false,
+          status: 'invalid_key',
+          error: 'INVALID_API_KEY',
+          message: 'The API key is invalid or expired. Please check your API key at clawpost.net and update it on this page.',
+          websiteUrl: 'https://clawpost.net'
+        });
+      }
+      
+      if (!usageResult.success) {
+        return JSON.stringify(usageResult);
+      }
+
+      return JSON.stringify({
+        success: true,
+        status: 'ready',
+        message: 'Claw Post is configured and ready to post.',
+        ...usageResult
+      });
     }
   },
   {

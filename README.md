@@ -129,12 +129,13 @@ For judges or anyone filming a demo walkthrough:
 1. Open https://daydreamnationtechlabs.github.io/clawpost-webmcp/
 2. Point out the "WebMCP ready" status showing 4 tools registered
 3. Scroll to show the list of registered tools
-4. If you have an API key, paste it and click Save
-5. Click "Test clawpost_status" to show the API responding
-6. Open ChatGPT in the same browser
-7. Ask: "Use clawpost_create_post to post 'Hello from WebMCP!' on X"
-8. If paired, show the live post URL in the response
-9. If not paired, show the `EXTENSION_NOT_PAIRED` error (this is valid, proves tools work)
+4. Click "Test clawpost_status" without a key — shows `not_configured` JSON
+5. If you have an API key, paste it and click Save
+6. Click "Test clawpost_status" again — shows `ready` or `invalid_key` JSON (no crash)
+7. Open ChatGPT in the same browser
+8. Ask: "Use clawpost_create_post to post 'Hello from WebMCP!' on X"
+9. If paired, show the live post URL in the response
+10. If not paired, show the `EXTENSION_NOT_PAIRED` error (this is valid, proves tools work)
 
 ### Wrap-up (10 seconds)
 - Mention this is a thin public demo, not the full product
@@ -144,12 +145,13 @@ For judges or anyone filming a demo walkthrough:
 
 The tools call these Claw Post API endpoints:
 
-- `GET /v1/account/status` - Check account status
+- `GET /health` - Check if the API is reachable (no auth required)
+- `GET /v1/usage` - Check account status and usage (requires `clawpost-api-key` header)
 - `POST /v1/jobs/tweet` - Create a social media post
 - `POST /v1/reddit/comment` - Post a Reddit comment
 - `GET /v1/jobs/:id` - Check job status
 
-All requests require the `clawpost-api-key` header.
+All `/v1/*` requests require the `clawpost-api-key` header.
 
 Full API documentation is available at clawpost.net after creating an account.
 
