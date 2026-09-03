@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Claw Post WebMCP Demo</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦀</text></svg>">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🦀 Claw Post WebMCP Demo</h1>
+      <p class="tagline">Post to social media from AI agents via your desktop Chrome browser</p>
+    </header>
+
+    <section class="hero">
+      <p>
+        This is a public demo showing how <a href="https://clawpost.net" target="_blank" rel="noopener">clawpost.net</a> 
+        integrates with the WebMCP API. Claw Post lets AI agents post from your already logged in desktop Chrome 
+        via a paired browser extension. This demo registers WebMCP tools that ChatGPT and other AI assistants 
+        can call to create posts on your behalf.
+      </p>
+      <p class="warning">
+        <strong>Note:</strong> The skill slug is always <code>@daydreamnationtechlabs/clawpost</code> (not a short name). 
+        There is a different product at clawpost.dev. This is not that.
+      </p>
+    </section>
+
+    <section class="status-section">
+      <h2>WebMCP Status</h2>
+      <div id="webmcp-status" class="status-box">
+        <span class="status-indicator checking"></span>
+        <span class="status-text">Checking WebMCP availability...</span>
+      </div>
+      <div id="tools-list" class="tools-list hidden">
+        <h3>Registered Tools</h3>
+        <ul id="registered-tools"></ul>
+      </div>
+    </section>
+
+    <section class="api-key-section">
+      <h2>API Key</h2>
+      <p>Paste your Claw Post API key below. Get one at <a href="https://clawpost.net" target="_blank" rel="noopener">clawpost.net</a> after installing the Chrome extension.</p>
+      <div class="input-group">
+        <input type="password" id="api-key-input" placeholder="cp_xxxxxxxxxxxxxxxx" autocomplete="off">
+        <button id="save-key-btn">Save Key</button>
+        <button id="clear-key-btn" class="secondary">Clear</button>
+      </div>
+      <p id="key-status" class="key-status"></p>
+    </section>
+
+    <section class="how-it-works">
+      <h2>How It Works</h2>
+      <ol>
+        <li>
+          <strong>Enable WebMCP in Chrome</strong><br>
+          Go to <code>chrome://flags/#enable-webmcp-testing</code> and enable the flag. Restart Chrome.
+          Or use ChatGPT's in-app browser which has WebMCP built in.
+        </li>
+        <li>
+          <strong>Install the Claw Post Extension</strong><br>
+          Get it from the <a href="https://chromewebstore.google.com/detail/claw-post/gebmgifdmnflfcehpbepkdnndkhgkchh" target="_blank" rel="noopener">Chrome Web Store</a>.
+        </li>
+        <li>
+          <strong>Pair Your Extension</strong><br>
+          Open the extension popup and follow the pairing flow at clawpost.net to get your API key.
+        </li>
+        <li>
+          <strong>Paste Your API Key</strong><br>
+          Enter your API key above. It is stored only in your browser's localStorage.
+        </li>
+        <li>
+          <strong>Use with AI</strong><br>
+          AI agents can now call the registered tools to post on your behalf using your desktop Chrome session.
+        </li>
+      </ol>
+    </section>
+
+    <section class="unique-features">
+      <h2>What Makes Claw Post Different</h2>
+      <ul>
+        <li><strong>Desktop Chrome, not a headless VPS.</strong> Posts come from your real browser session where you are already logged in.</li>
+        <li><strong>Facebook member groups.</strong> Post to private Facebook groups you already belong to.</li>
+        <li><strong>Reddit comments.</strong> Reply to Reddit threads with a dedicated API endpoint.</li>
+        <li><strong>No X reply tool.</strong> There is no tool to reply to someone else's tweet. You can only post your own content.</li>
+      </ul>
+    </section>
+
+    <section class="test-section">
+      <h2>Manual Test</h2>
+      <p>Test the tools directly without an AI agent:</p>
+      <div class="test-buttons">
+        <button id="test-status-btn">Test clawpost_status</button>
+        <button id="test-post-btn">Test clawpost_create_post</button>
+      </div>
+      <pre id="test-output" class="test-output hidden"></pre>
+    </section>
+
+    <footer>
+      <p>
+        This is a thin public demo for the OpenAI WebMCP Challenge, not the full Claw Post product.<br>
+        <a href="https://github.com/Daydreamnationtechlabs/clawpost-webmcp" target="_blank" rel="noopener">View source on GitHub</a> | 
+        MIT License
+      </p>
+    </footer>
+  </div>
+
+  <script src="webmcp.js"></script>
+</body>
+</html>
