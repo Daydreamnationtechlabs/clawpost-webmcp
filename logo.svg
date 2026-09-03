@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Red squircle background -->
+  <rect x="5" y="5" width="90" height="90" rx="20" ry="20" fill="#dc3545"/>
+  
+  <!-- White mechanical claw/gripper icon - simplified and bold -->
+  <g fill="none" stroke="#ffffff" stroke-width="7" stroke-linecap="round" stroke-linejoin="round">
+    <!-- Handle -->
+    <line x1="24" y1="76" x2="42" y2="58"/>
+    
+    <!-- Upper claw arm with tip -->
+    <path d="M42 58 L50 50 L58 42 Q68 32 72 28"/>
+    <path d="M72 28 L78 35"/>
+    
+    <!-- Lower claw arm with tip -->
+    <path d="M50 50 L58 58 Q68 68 72 72"/>
+    <path d="M72 72 L78 65"/>
+  </g>
+  
+  <!-- Central pivot point -->
+  <circle cx="50" cy="50" r="5" fill="#ffffff"/>
+</svg>
