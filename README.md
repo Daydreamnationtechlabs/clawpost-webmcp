@@ -2,6 +2,8 @@
 
 **Live Demo: https://daydreamnationtechlabs.github.io/clawpost-webmcp/**
 
+> **Note:** If the live demo is not yet available, the repo owner needs to enable GitHub Pages: Go to Settings > Pages > Source: "GitHub Actions", then push any change or re-run the workflow.
+
 A public demonstration of WebMCP integration for [clawpost.net](https://clawpost.net). This is a thin demo for the OpenAI WebMCP Challenge, not the full Claw Post product.
 
 ## What Is This?
@@ -92,6 +94,27 @@ python3 -m http.server 8000
 ```
 
 Then open http://localhost:8000 (or your server's port) in Chrome with WebMCP enabled.
+
+## Deployment
+
+### GitHub Pages (Recommended)
+
+This repo includes a GitHub Actions workflow that automatically deploys to GitHub Pages. To enable it:
+
+1. Go to repo Settings > Pages
+2. Under "Build and deployment", set Source to "GitHub Actions"
+3. The workflow will run on the next push, or you can manually trigger it from Actions > Deploy to GitHub Pages > Run workflow
+
+The site will be available at: https://daydreamnationtechlabs.github.io/clawpost-webmcp/
+
+### Alternative Deployment
+
+Since this is a static site, you can deploy it anywhere:
+
+- **Netlify**: Drag and drop the repo folder at netlify.com/drop
+- **Vercel**: Import the GitHub repo at vercel.com/new
+- **Cloudflare Pages**: Connect the repo at pages.cloudflare.com
+- **Any web server**: Just serve the files from any HTTPS-enabled host
 
 ## 90-Second Demo Script
 
